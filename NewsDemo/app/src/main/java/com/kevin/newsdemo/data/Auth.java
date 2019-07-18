@@ -36,6 +36,18 @@ public class Auth implements Serializable {
         return refreshToken;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
     @Override
     public String toString() {
         return "Auth{" +
