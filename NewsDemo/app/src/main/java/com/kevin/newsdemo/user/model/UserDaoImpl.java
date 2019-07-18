@@ -67,7 +67,7 @@ public class UserDaoImpl implements UserDao {
             auth = new Auth(String.valueOf(id), token, refreshToken);
         }
         User user = new User(auth);
-//        cursor.close();
+        cursor.close();
         database.close();
         return user;
     }

@@ -42,8 +42,8 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        mUserName.setText("valid");
-        mPassword.setText("valid");
+//        mUserName.setText("valid");
+//        mPassword.setText("valid");
 
     }
 

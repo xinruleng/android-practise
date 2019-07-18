@@ -21,7 +21,7 @@ import java.net.URL;
  */
 public class UserModel {
     private static final String TAG = "UserModel";
-    private static final String HOST = "http://10.0.0.35:12306";
+    private static final String HOST = "http://192.168.1.194:12306";
 
     private User mUser;
     private UserProfile mUserProfile;
