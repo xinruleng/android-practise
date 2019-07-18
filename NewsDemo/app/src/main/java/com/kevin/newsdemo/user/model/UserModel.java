@@ -58,10 +58,11 @@ public class UserModel {
                 try {
                     Thread.sleep(2000);
                     BaseResult<UserProfile> result = doGetProfile(user.getAuth().getId(), user.getAuth().getToken());
-                    if(result.isOK()) {
+                    if (result.isOK()) {
                         mUserProfile = result.getData();
                         callBack.onSuccess(result.getData());
-                    } else {
+                    }
+                    else {
                         mUserProfile = null;
                         callBack.onFailed(ResultCode.ERROR, new RuntimeException());
                     }
@@ -130,7 +131,7 @@ public class UserModel {
                 connection.setConnectTimeout(10_000);
                 connection.setReadTimeout(10_000);
                 connection.setRequestMethod("POST");
-                Log.d(TAG, "doLogin: getDoOutput=" + connection.getDoOutput() +",getDoInput=" + connection.getDoInput());
+                Log.d(TAG, "doLogin: getDoOutput=" + connection.getDoOutput() + ",getDoInput=" + connection.getDoInput());
                 connection.setDoOutput(true);
                 connection.setRequestProperty("username", name);
                 connection.setRequestProperty("password", password);

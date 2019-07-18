@@ -51,8 +51,8 @@ public class UserInfoActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mNameText.setText("name: "+userProfile.getProfile().getName());
-                        mGenderText.setText("gender: "+userProfile.getProfile().getGender());
+                        mNameText.setText("name: " + userProfile.getProfile().getName());
+                        mGenderText.setText("gender: " + userProfile.getProfile().getGender());
                         loading(false);
                     }
                 });

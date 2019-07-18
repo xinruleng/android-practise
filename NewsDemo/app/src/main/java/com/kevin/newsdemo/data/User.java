@@ -11,6 +11,13 @@ public class User implements Serializable {
     @SerializedName("auth")
     private Auth auth;
 
+    public User() {
+    }
+
+    public User(Auth auth) {
+        this.auth = auth;
+    }
+
     public Auth getAuth() {
         return auth;
     }

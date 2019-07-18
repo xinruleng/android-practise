@@ -15,6 +15,15 @@ public class Auth implements Serializable {
     @SerializedName("refresh-token")
     private String refreshToken;
 
+    public Auth() {
+    }
+
+    public Auth(String id, String token, String refreshToken) {
+        this.id = id;
+        this.token = token;
+        this.refreshToken = refreshToken;
+    }
+
     public String getId() {
         return id;
     }

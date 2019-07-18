@@ -74,7 +74,7 @@ public class LoginActivity extends BaseActivity {
 
     private void startUserInfoActivity(User user) {
         Intent intent = new Intent(this, UserInfoActivity.class);
-        intent.putExtra(UserInfoActivity.USER,(Serializable) user);
+        intent.putExtra(UserInfoActivity.USER, (Serializable) user);
         startActivity(intent);
     }
 
