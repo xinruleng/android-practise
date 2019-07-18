@@ -33,4 +33,12 @@ public class BaseResult<T> {
     public boolean isOK() {
         return code == ResultCode.OK;
     }
+
+    public T getData() {
+        return t;
+    }
+
+    public ResultCode getCode() {
+        return code;
+    }
 }

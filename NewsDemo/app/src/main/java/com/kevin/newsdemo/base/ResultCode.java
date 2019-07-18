@@ -7,6 +7,7 @@ public enum ResultCode {
     OK("OK"),
     ERROR("ERROR"),
     INVALID_NAME_PASSWORD("invalid username or password"),
+    TOKEN_ERROR("token error"),
     ;
 
     ResultCode(String des) {
