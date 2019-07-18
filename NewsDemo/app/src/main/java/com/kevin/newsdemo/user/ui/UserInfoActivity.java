@@ -3,6 +3,8 @@ package com.kevin.newsdemo.user.ui;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.kevin.newsdemo.R;
 import com.kevin.newsdemo.base.BaseActivity;
 import com.kevin.newsdemo.base.CallBack;
@@ -16,28 +18,27 @@ public class UserInfoActivity extends BaseActivity {
 
     private User mUser;
 
-    private TextView mIdText;
-    private TextView mTokenText;
-    private TextView mNameText;
-    private TextView mGenderText;
-    private View mLoading;
+    @BindView(R.id.idText)
+    TextView mIdText;
+    @BindView(R.id.tokenText)
+    TextView mTokenText;
+    @BindView(R.id.nameTextView)
+    TextView mNameText;
+    @BindView(R.id.genderTextView)
+    TextView mGenderText;
+    @BindView(R.id.loading)
+    View mLoading;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+        ButterKnife.bind(this);
 
         mUser = (User) getIntent().getSerializableExtra(USER);
 
         toast(mUser.toString());
-
-        mIdText = findViewById(R.id.idText);
-        mTokenText = findViewById(R.id.tokenText);
-        mNameText = findViewById(R.id.nameTextView);
-        mGenderText = findViewById(R.id.genderTextView);
-
-        mLoading = findViewById(R.id.loading);
 
         mIdText.setText("id: " + mUser.getAuth().getId());
         mTokenText.setText("token: " + mUser.getAuth().getToken());

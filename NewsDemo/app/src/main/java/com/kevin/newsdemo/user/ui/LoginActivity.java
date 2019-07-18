@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.kevin.newsdemo.R;
 import com.kevin.newsdemo.base.BaseActivity;
 import com.kevin.newsdemo.base.CallBack;
@@ -19,35 +21,26 @@ import java.io.Serializable;
 public class LoginActivity extends BaseActivity {
     private static final String TAG = "UserLoginActivity";
 
-    private EditText mUserName;
-    private EditText mPassword;
-    private Button mLogin;
-
-    private View mLoading;
+    @BindView(R.id.username)
+    EditText mUserName;
+    @BindView(R.id.password)
+    EditText mPassword;
+    @BindView(R.id.loading)
+    View mLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        mUserName = findViewById(R.id.username);
-        mPassword = findViewById(R.id.password);
-        mLoading = findViewById(R.id.loading);
-
-        mLogin = findViewById(R.id.login);
-        mLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                login();
-            }
-        });
+        ButterKnife.bind(this);
 
 //        mUserName.setText("valid");
 //        mPassword.setText("valid");
 
     }
 
-    private void login() {
+    @OnClick(R.id.login)
+    public void login() {
         Log.d(TAG, "login: ");
 
         loading(true);
