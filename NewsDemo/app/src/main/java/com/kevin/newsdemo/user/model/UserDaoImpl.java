@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public boolean insert(User user) {
+    public void insert(User user) {
         final SQLiteDatabase database = mySqLiteOpenHelper.getWritableDatabase();
         String sql = "INSERT INTO " + TABLE_NAME + " (id, access_token, refresh_token), values(?,?, ?)";
         ContentValues values = new ContentValues();
@@ -32,13 +32,14 @@ public class UserDaoImpl implements UserDao {
         values.put("access_token", auth.getToken());
         values.put("refresh_token", auth.getRefreshToken());
         long id = database.insert(TABLE_NAME, sql, values);
-
         database.close();
-        return id > 0;
+        if (id <= 0) {
+            throw new RuntimeException();
+        }
     }
 
     @Override
-    public boolean update(User user) {
+    public void update(User user) {
         final SQLiteDatabase database = mySqLiteOpenHelper.getWritableDatabase();
 
         final Auth auth = user.getAuth();
@@ -50,7 +51,9 @@ public class UserDaoImpl implements UserDao {
         String[] whereArgs = new String[]{auth.getId()};
         final int update = database.update(TABLE_NAME, values, whereClause, whereArgs);
         database.close();
-        return update > 0;
+        if (update <= 0) {
+            throw new RuntimeException();
+        }
     }
 
     @Override
@@ -59,21 +62,24 @@ public class UserDaoImpl implements UserDao {
         final SQLiteDatabase database = mySqLiteOpenHelper.getReadableDatabase();
         final Cursor cursor = database.rawQuery(sql, null);
         Auth auth = null;
-        while (cursor.moveToNext()) {
+        if (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex("id"));
             String token = cursor.getString(cursor.getColumnIndex("access_token"));
             String refreshToken = cursor.getString(cursor.getColumnIndex("refresh_token"));
 
             auth = new Auth(String.valueOf(id), token, refreshToken);
+            User user = new User(auth);
+            cursor.close();
+            database.close();
+            return user;
         }
-        User user = new User(auth);
-        cursor.close();
-        database.close();
-        return user;
+        else {
+            throw new RuntimeException();
+        }
     }
 
     @Override
-    public boolean delete(User user) {
+    public void delete(User user) {
         final SQLiteDatabase database = mySqLiteOpenHelper.getWritableDatabase();
 
         String where = "id=?";
@@ -81,6 +87,8 @@ public class UserDaoImpl implements UserDao {
         String[] whereArgs = new String[]{user.getAuth().getId()};
         final int delete = database.delete(TABLE_NAME, where, whereArgs);
         database.close();
-        return delete > 0;
+        if (delete <= 0) {
+            throw new RuntimeException();
+        }
     }
 }

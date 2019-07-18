@@ -5,10 +5,13 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 import com.kevin.newsdemo.data.Auth;
 import com.kevin.newsdemo.data.User;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.junit.Assert.fail;
 
 /**
  * Created by kevin on 2019/07/18 10:39.
@@ -28,43 +31,86 @@ public class UserDaoTest {
         user = new User(new Auth(ID, TOKEN, REFRESH_TOKEN));
     }
 
+    @After
+    public void tearDown() {
+        try {
+            dao.delete(user);
+        }
+        catch (Exception e) {
+        }
+    }
+
     @Test
-    public void should_all() {
-        should_insert_succeed();
-        should_query_succeed();
-        should_update_succeed();
-        should_delete_succeed();
+    public void should_delete_succeed() throws Exception {
+        dao.insert(user);
+        dao.delete(user);
+
+        try {
+            dao.delete(user);
+            fail();
+        }
+        catch (Exception e) {
+            Assert.assertTrue(e instanceof RuntimeException);
+        }
     }
 
-    public void should_delete_succeed() {
-        boolean r = dao.delete(user);
-        Assert.assertTrue(r);
+    @Test
+    public void should_insert_succeed() throws Exception {
+        dao.insert(user);
+
+        try {
+            dao.insert(user);
+            fail();
+        }
+        catch (Exception e) {
+            Assert.assertTrue(e instanceof RuntimeException);
+        }
+
     }
 
-    public void should_insert_succeed() {
-        boolean r = dao.insert(user);
-        Assert.assertTrue(r);
-    }
-
-    public void should_query_succeed() {
+    @Test
+    public void should_query_succeed() throws Exception {
+        dao.insert(user);
         User user = dao.query();
         final Auth auth = user.getAuth();
         Assert.assertEquals(ID, auth.getId());
         Assert.assertEquals(TOKEN, auth.getToken());
         Assert.assertEquals(REFRESH_TOKEN, auth.getRefreshToken());
+
+        dao.delete(user);
+        try {
+            user = dao.query();
+            fail();
+        }
+        catch (Exception e) {
+            Assert.assertTrue(e instanceof RuntimeException);
+        }
     }
 
-    public void should_update_succeed() {
+    @Test
+    public void should_update_succeed() throws Exception {
+        dao.insert(user);
+
         Auth auth = new Auth(ID, TOKEN + 1, REFRESH_TOKEN + 1);
         User user = new User(auth);
 
-        boolean r = dao.update(user);
-        Assert.assertTrue(r);
+        dao.update(user);
 
         user = dao.query();
         auth = user.getAuth();
         Assert.assertEquals(ID, auth.getId());
         Assert.assertEquals(TOKEN + 1, auth.getToken());
         Assert.assertEquals(REFRESH_TOKEN + 1, auth.getRefreshToken());
+
+        dao.delete(user);
+        try {
+            dao.update(user);
+            fail();
+        }
+        catch (Exception e) {
+            Assert.assertTrue(e instanceof RuntimeException);
+        }
     }
+
+
 }

@@ -7,11 +7,11 @@ import com.kevin.newsdemo.data.User;
  */
 public interface UserDao {
 
-    boolean insert(User user);
+    void insert(User user) throws Exception;
 
-    boolean update(User user);
+    void update(User user) throws Exception;
 
-    User query();
+    User query() throws Exception;
 
-    boolean delete(User user);
+    void delete(User user) throws Exception;
 }
