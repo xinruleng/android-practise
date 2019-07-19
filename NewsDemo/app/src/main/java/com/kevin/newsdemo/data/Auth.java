@@ -10,7 +10,7 @@ import java.util.Objects;
  * Created by kevin on 2019/07/17 13:29.
  */
 public class Auth implements Serializable {
-    @SerializedName("idToken-token")
+    @SerializedName("id-token")
     @ColumnInfo(name = "idToken")
     private String idToken;
 

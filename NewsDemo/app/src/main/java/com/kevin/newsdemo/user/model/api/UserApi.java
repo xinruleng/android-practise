@@ -3,6 +3,7 @@ package com.kevin.newsdemo.user.model.api;
 import com.kevin.newsdemo.data.LoginData;
 import com.kevin.newsdemo.data.User;
 import com.kevin.newsdemo.data.UserProfile;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -17,5 +18,5 @@ public interface UserApi {
     Call<User> login(@Body LoginData loginData);
 
     @GET("/user/profile")
-    Call<UserProfile> getProfile(@Header("id-token") String id, @Header("access-token") String token);
+    Observable<UserProfile> getProfile(@Header("id-token") String id, @Header("access-token") String token);
 }

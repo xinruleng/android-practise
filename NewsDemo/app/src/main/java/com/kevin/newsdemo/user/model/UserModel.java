@@ -7,6 +7,7 @@ import com.kevin.newsdemo.data.User;
 import com.kevin.newsdemo.data.UserProfile;
 import com.kevin.newsdemo.user.model.api.ApiClient;
 import com.kevin.newsdemo.user.model.api.UserApi;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,29 +49,11 @@ public class UserModel {
         });
     }
 
-    public void getProfile(final User user, final CallBack<UserProfile> callBack) {
+    public Observable<UserProfile> getProfile(final User user) {
 //        Thread.sleep(SLEEP_MILLIS);
         final UserApi userApi = ApiClient.getInstance().newApi(UserApi.class);
-        final Call<UserProfile> call = userApi.getProfile(user.getAuth().getIdToken(), user.getAuth().getToken());
-        call.enqueue(new Callback<UserProfile>() {
-            @Override
-            public void onResponse(Call<UserProfile> call, Response<UserProfile> resp) {
-                if (resp.code() == HttpURLConnection.HTTP_OK) {
-                    mUserProfile = resp.body();
-                    callBack.onSuccess(resp.body());
-                }
-                else {
-                    mUserProfile = null;
-                    callBack.onFailed(ResultCode.TOKEN_ERROR, new RuntimeException());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserProfile> call, Throwable t) {
-                mUserProfile = null;
-                callBack.onFailed(ResultCode.ERROR, t);
-            }
-        });
+        final Observable<UserProfile> observable = userApi.getProfile(user.getAuth().getIdToken(), user.getAuth().getToken());
+        return observable;
     }
 
     public User getUser() {

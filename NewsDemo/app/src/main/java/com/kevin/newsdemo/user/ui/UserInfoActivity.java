@@ -9,11 +9,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kevin.newsdemo.R;
 import com.kevin.newsdemo.base.BaseActivity;
-import com.kevin.newsdemo.base.CallBack;
-import com.kevin.newsdemo.base.ResultCode;
 import com.kevin.newsdemo.data.User;
-import com.kevin.newsdemo.data.UserProfile;
 import com.kevin.newsdemo.user.model.UserModel;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class UserInfoActivity extends BaseActivity {
     private static final String TAG = "UserInfoActivity";
@@ -51,27 +50,22 @@ public class UserInfoActivity extends BaseActivity {
         loading(true);
         getIdlingResource().increment();
         final UserModel userModel = new UserModel();
-        userModel.getProfile(mUser, new CallBack<UserProfile>() {
-            @Override
-            public void onSuccess(final UserProfile userProfile) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loading(false);
-                        getIdlingResource().decrement();
-                        mNameText.setText("name: " + userProfile.getProfile().getName());
-                        mGenderText.setText("gender: " + userProfile.getProfile().getGender());
-                    }
-                });
-            }
-
-            @Override
-            public void onFailed(ResultCode code, Throwable throwable) {
-                loading(false);
-                getIdlingResource().decrement();
-            }
-        });
-
+        userModel.getProfile(mUser)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        userProfile -> {
+                            loading(false);
+                            getIdlingResource().decrement();
+                            mNameText.setText("name: " + userProfile.getProfile().getName());
+                            mGenderText.setText("gender: " + userProfile.getProfile().getGender());
+                        },
+                        t -> {
+                            loading(false);
+                            getIdlingResource().decrement();
+                        }
+                )
+        ;
     }
 
     private void loading(final boolean show) {

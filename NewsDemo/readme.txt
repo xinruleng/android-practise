@@ -3,7 +3,8 @@
 
 
 code lines:
-    No 3rd libraries: 1211
-    use Butterknife: 1205
-    use Retrofit: 1222
+    No 3rd libraries:
+    use Butterknife:
+    use Retrofit:
 
+    use Room: 1421
