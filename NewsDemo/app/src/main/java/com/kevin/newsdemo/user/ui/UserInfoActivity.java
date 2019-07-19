@@ -54,11 +54,11 @@ public class UserInfoActivity extends BaseActivity {
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .subscribe(
-            userProfile -> {
+            result -> {
                 loading(false);
                 getIdlingResource().decrement();
-                mNameText.setText("name: " + userProfile.getProfile().getName());
-                mGenderText.setText("gender: " + userProfile.getProfile().getGender());
+                mNameText.setText("name: " + result.getData().getProfile().getName());
+                mGenderText.setText("gender: " + result.getData().getProfile().getGender());
             },
             t -> {
                 loading(false);

@@ -60,13 +60,13 @@ public class LoginActivity extends BaseActivity {
             o -> {
                 loading(false);
                 getIdlingResource().decrement();
-                toast("登录成功 " + o);
-                startUserInfoActivity(o);
-            },
-            t -> {
-                loading(false);
-                getIdlingResource().decrement();
-                toast("登录失败 " + t);
+                if (o.isOK()) {
+                    toast("登录成功 " + o);
+                    startUserInfoActivity(o.getData());
+                }
+                else {
+                    toast("登录失败 ");
+                }
             }
           )
         ;

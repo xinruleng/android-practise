@@ -1,7 +1,6 @@
 package com.kevin.newsdemo.user.model;
 
-import android.util.Log;
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+import com.kevin.newsdemo.base.ResultCode;
 import com.kevin.newsdemo.data.Auth;
 import com.kevin.newsdemo.data.Profile;
 import com.kevin.newsdemo.data.UserProfile;
@@ -30,8 +29,9 @@ public class UserModelTest {
         String password = "valid";
 
         model.login(name, password)
-          .subscribe(user -> {
-                Auth auth = user.getAuth();
+          .subscribe(result -> {
+                Assert.assertTrue(result.isOK());
+                Auth auth = result.getData().getAuth();
                 assertEquals("123456", auth.getIdToken());
                 assertEquals("98908989089", auth.getToken());
                 assertEquals("34545234234", auth.getRefreshToken());
@@ -46,12 +46,9 @@ public class UserModelTest {
         String password = "valid1";
         model.login(name, password)
           .subscribe(
-            user -> {
-            },
-            t -> {
-                HttpException exception = (HttpException) t;
-                int code = exception.code();
-                Assert.assertEquals(400, code);
+            result -> {
+                Assert.assertFalse(result.isOK());
+                Assert.assertEquals(ResultCode.INVALID_NAME_PASSWORD, result.getCode());
             })
         ;
     }
@@ -62,11 +59,10 @@ public class UserModelTest {
         String password = "valid";
 
         model.login(name, password)
-          .flatMap(user -> {
-              return model.getProfile(user);
-          })
-          .subscribe(userProfile -> {
-              checkUserProfile(userProfile);
+          .flatMap(result -> model.getProfile(result.getData()))
+          .subscribe(result -> {
+              Assert.assertTrue(result.isOK());
+              checkUserProfile(result.getData());
           });
     }
 
@@ -82,20 +78,15 @@ public class UserModelTest {
         String name = "valid";
         String password = "valid";
         model.login(name, password)
-          .flatMap(user -> {
-              final Auth auth = user.getAuth();
+          .flatMap(result -> {
+              final Auth auth = result.getData().getAuth();
               auth.setIdToken(auth.getIdToken() + 1);
               auth.setToken(auth.getToken() + 1);
-              return model.getProfile(user);
+              return model.getProfile(result.getData());
           })
-          .subscribe(
-            userProfile -> {
-            },
-            t -> {
-                HttpException exception = (HttpException) t;
-                int code = exception.code();
-                Assert.assertEquals(400, code);
-                Log.d(TAG, "onSuccess: t");
-            });
+          .subscribe(result -> {
+              Assert.assertFalse(result.isOK());
+              Assert.assertEquals(ResultCode.TOKEN_ERROR, result.getCode());
+          });
     }
 }

@@ -7,6 +7,7 @@ public enum ResultCode {
     OK("OK"),
     ERROR("ERROR"),
     INVALID_NAME_PASSWORD("invalid username or password"),
+    EMPTY_NAME_OR_PASSWORD("empty name or password"),
     TOKEN_ERROR("token error"),
     ;
 

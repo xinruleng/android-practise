@@ -18,7 +18,7 @@ public class BaseResult<T> {
         this.throwable = throwable;
     }
 
-    public static <T> BaseResult succeed(T t) {
+    public static <T> BaseResult<T> succeed(T t) {
         return new BaseResult(ResultCode.OK, t);
     }
 
