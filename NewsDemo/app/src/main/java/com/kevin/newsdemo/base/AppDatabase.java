@@ -8,7 +8,7 @@ import com.kevin.newsdemo.user.model.UserDao;
 /**
  * Created by kevin on 2019/07/18 21:35.
  */
-@Database(entities = {User.class}, version = 1, exportSchema = true)
+@Database(entities = {User.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
 }
