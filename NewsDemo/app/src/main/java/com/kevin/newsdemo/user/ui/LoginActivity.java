@@ -11,11 +11,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.kevin.newsdemo.R;
 import com.kevin.newsdemo.base.BaseActivity;
-import com.kevin.newsdemo.base.CallBack;
-import com.kevin.newsdemo.base.ResultCode;
 import com.kevin.newsdemo.data.User;
 import com.kevin.newsdemo.user.model.UserModel;
 import com.kevin.newsdemo.utils.ViewUtils;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import java.io.Serializable;
 
@@ -53,22 +53,23 @@ public class LoginActivity extends BaseActivity {
         String password = ViewUtils.getText(mPassword);
 
         getIdlingResource().increment();
-        userModel.login(name, password, new CallBack<User>() {
-            @Override
-            public void onSuccess(User o) {
+        userModel.login(name, password)
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(
+            o -> {
                 loading(false);
                 getIdlingResource().decrement();
                 toast("登录成功 " + o);
                 startUserInfoActivity(o);
-            }
-
-            @Override
-            public void onFailed(ResultCode code, Throwable throwable) {
+            },
+            t -> {
                 loading(false);
                 getIdlingResource().decrement();
-                toast("登录失败 " + code.getDes() + "," + throwable);
+                toast("登录失败 " + t);
             }
-        });
+          )
+        ;
 
 //        loading(false);
 //        User user = new User(new Auth("1", "token", "token2"));

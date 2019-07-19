@@ -58,10 +58,10 @@ public class Auth implements Serializable {
     @Override
     public String toString() {
         return "Auth{" +
-                "idToken='" + idToken + '\'' +
-                ", token='" + token + '\'' +
-                ", refreshToken='" + refreshToken + '\'' +
-                '}';
+          "idToken='" + idToken + '\'' +
+          ", token='" + token + '\'' +
+          ", refreshToken='" + refreshToken + '\'' +
+          '}';
     }
 
     @Override
@@ -72,8 +72,8 @@ public class Auth implements Serializable {
             return false;
         Auth auth = (Auth) o;
         return Objects.equals(idToken, auth.idToken) &&
-                Objects.equals(token, auth.token) &&
-                Objects.equals(refreshToken, auth.refreshToken);
+          Objects.equals(token, auth.token) &&
+          Objects.equals(refreshToken, auth.refreshToken);
     }
 
     @Override

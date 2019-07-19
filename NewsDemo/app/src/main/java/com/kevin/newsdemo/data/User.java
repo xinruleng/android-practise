@@ -50,8 +50,8 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", auth=" + auth +
-                '}';
+          "id=" + id +
+          ", auth=" + auth +
+          '}';
     }
 }

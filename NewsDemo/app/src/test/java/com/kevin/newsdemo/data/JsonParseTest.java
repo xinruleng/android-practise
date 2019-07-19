@@ -12,10 +12,10 @@ public class JsonParseTest {
     @Test
     public void test_parse_auth() {
         String json = "{\n" +
-                "        \"id-token\": \"123456\",\n" +
-                "        \"access-token\": \"98908989089\",\n" +
-                "        \"refresh-token\": \"34545234234\"\n" +
-                "    }";
+          "        \"id-token\": \"123456\",\n" +
+          "        \"access-token\": \"98908989089\",\n" +
+          "        \"refresh-token\": \"34545234234\"\n" +
+          "    }";
 
         Gson gson = new Gson();
         Auth auth = gson.fromJson(json, Auth.class);
@@ -27,12 +27,12 @@ public class JsonParseTest {
     @Test
     public void test_parse_user() {
         String json = "{\n" +
-                "    \"auth\": {\n" +
-                "        \"id-token\": \"123456\",\n" +
-                "        \"access-token\": \"98908989089\",\n" +
-                "        \"refresh-token\": \"34545234234\"\n" +
-                "    }\n" +
-                "}";
+          "    \"auth\": {\n" +
+          "        \"id-token\": \"123456\",\n" +
+          "        \"access-token\": \"98908989089\",\n" +
+          "        \"refresh-token\": \"34545234234\"\n" +
+          "    }\n" +
+          "}";
 
         Gson gson = new Gson();
         User user = gson.fromJson(json, User.class);
@@ -45,10 +45,10 @@ public class JsonParseTest {
     @Test
     public void test_parse_profile() {
         String json = "{\n" +
-                "        \"name\": \"John Smith\",\n" +
-                "        \"gender\": \"male\",\n" +
-                "        \"avartar\": \"\"\n" +
-                "    }";
+          "        \"name\": \"John Smith\",\n" +
+          "        \"gender\": \"male\",\n" +
+          "        \"avartar\": \"\"\n" +
+          "    }";
         Gson gson = new Gson();
         Profile profile = gson.fromJson(json, Profile.class);
         assertEquals("John Smith", profile.getName());
@@ -59,12 +59,12 @@ public class JsonParseTest {
     @Test
     public void test_parse_user_profile() {
         String json = "{\n" +
-                "    \"profile\": {\n" +
-                "        \"name\": \"John Smith\",\n" +
-                "        \"gender\": \"male\",\n" +
-                "        \"avartar\": \"\"\n" +
-                "    }\n" +
-                "}";
+          "    \"profile\": {\n" +
+          "        \"name\": \"John Smith\",\n" +
+          "        \"gender\": \"male\",\n" +
+          "        \"avartar\": \"\"\n" +
+          "    }\n" +
+          "}";
         Gson gson = new Gson();
         UserProfile userProfile = gson.fromJson(json, UserProfile.class);
         Profile profile = userProfile.getProfile();

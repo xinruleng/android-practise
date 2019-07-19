@@ -16,11 +16,11 @@ public class MySqLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE user (\n" +
-                "    id          INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
-                "    id_token TEXT    NOT NULL UNIQUE,\n" +
-                "    access_token TEXT    NOT NULL,\n" +
-                "    refresh_token  TEXT NOT NULL\n" +
-                ");";
+          "    id          INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
+          "    id_token TEXT    NOT NULL UNIQUE,\n" +
+          "    access_token TEXT    NOT NULL,\n" +
+          "    refresh_token  TEXT NOT NULL\n" +
+          ");";
 
         db.execSQL(sql);
     }

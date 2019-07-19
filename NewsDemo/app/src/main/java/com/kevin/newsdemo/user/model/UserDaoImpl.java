@@ -35,8 +35,9 @@ public class UserDaoImpl implements UserDao {
         database.close();
         if (id <= 0) {
             throw new RuntimeException();
-        } else {
-            user.setId((int)id);
+        }
+        else {
+            user.setId((int) id);
             return id;
         }
     }

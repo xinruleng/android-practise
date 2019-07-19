@@ -36,7 +36,7 @@ public class UserDaoTest {
         user = new User(new Auth(ID, TOKEN, REFRESH_TOKEN));
 
         db = Room.databaseBuilder(appContext,
-                AppDatabase.class, "userZoom.db").build();
+          AppDatabase.class, "userZoom.db").build();
         dao = db.userDao();
         Log.d(TAG, "init: user=" + user);
     }

@@ -51,20 +51,20 @@ public class UserInfoActivity extends BaseActivity {
         getIdlingResource().increment();
         final UserModel userModel = new UserModel();
         userModel.getProfile(mUser)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        userProfile -> {
-                            loading(false);
-                            getIdlingResource().decrement();
-                            mNameText.setText("name: " + userProfile.getProfile().getName());
-                            mGenderText.setText("gender: " + userProfile.getProfile().getGender());
-                        },
-                        t -> {
-                            loading(false);
-                            getIdlingResource().decrement();
-                        }
-                )
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(
+            userProfile -> {
+                loading(false);
+                getIdlingResource().decrement();
+                mNameText.setText("name: " + userProfile.getProfile().getName());
+                mGenderText.setText("gender: " + userProfile.getProfile().getGender());
+            },
+            t -> {
+                loading(false);
+                getIdlingResource().decrement();
+            }
+          )
         ;
     }
 
