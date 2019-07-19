@@ -60,4 +60,7 @@ dependencies {
 
     implementation group: 'com.jakewharton.retrofit', name: 'retrofit2-rxjava2-adapter', version: '1.0.0'
 
+    testImplementation "org.mockito:mockito-all:1.10.19"
+    implementation 'org.mockito:mockito-core:3.0.0'
+
 }

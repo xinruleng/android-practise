@@ -34,12 +34,12 @@ public class ApiClient {
               public Response intercept(Chain chain) throws IOException {
                   Log.d(TAG, "intercept: " + Thread.currentThread().getName());
                   if (BuildConfig.DEBUG) {
-//                            try {
-//                                Thread.sleep(2000);
-//                            }
-//                            catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
+                            try {
+                                Thread.sleep(1000);
+                            }
+                            catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                   }
                   return chain.proceed(chain.request());
               }

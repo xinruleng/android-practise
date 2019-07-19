@@ -1,5 +1,7 @@
 package com.kevin.newsdemo.base;
 
+import java.util.Objects;
+
 /**
  * Created by kevin on 2019/07/17 13:17.
  */
@@ -40,5 +42,26 @@ public class BaseResult<T> {
 
     public ResultCode getCode() {
         return code;
+    }
+
+    public Throwable getThrowable() {
+        return throwable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof BaseResult))
+            return false;
+        BaseResult<?> that = (BaseResult<?>) o;
+        return code == that.code &&
+          Objects.equals(t, that.t) &&
+          Objects.equals(throwable, that.throwable);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, t, throwable);
     }
 }

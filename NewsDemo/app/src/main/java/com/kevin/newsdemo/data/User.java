@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by kevin on 2019/07/17 10:45.
@@ -53,5 +54,21 @@ public class User implements Serializable {
           "id=" + id +
           ", auth=" + auth +
           '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof User))
+            return false;
+        User user = (User) o;
+        return id == user.id &&
+          Objects.equals(auth, user.auth);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, auth);
     }
 }
