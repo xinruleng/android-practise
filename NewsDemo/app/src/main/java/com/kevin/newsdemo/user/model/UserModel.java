@@ -8,6 +8,7 @@ import com.kevin.newsdemo.data.UserProfile;
 import com.kevin.newsdemo.user.model.api.ApiClient;
 import com.kevin.newsdemo.user.model.api.UserApi;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.net.HttpURLConnection;
@@ -17,52 +18,59 @@ import java.net.HttpURLConnection;
  */
 public class UserModel {
     private static final String TAG = "UserModel";
-    public static final String HOST = "http://192.168.1.194:12306";
+    public static final String HOST = "http://10.0.0.35:12306";
 
     private User mUser;
     private UserProfile mUserProfile;
 
     public void login(final String name, final String password, final CallBack<User> callBack) {
-        try {
-            Thread.sleep(SLEEP_MILLIS);
-            final UserApi userApi = ApiClient.getInstance().newApi(UserApi.class);
-            final Call<User> call = userApi.login(new LoginData(name, password));
-            final Response<User> resp = call.execute();
-            if (resp.code() == HttpURLConnection.HTTP_OK) {
-                mUser = resp.body();
-                callBack.onSuccess(resp.body());
+//        Thread.sleep(SLEEP_MILLIS);
+        final UserApi userApi = ApiClient.getInstance().newApi(UserApi.class);
+        final Call<User> call = userApi.login(new LoginData(name, password));
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> resp) {
+                if (resp.code() == HttpURLConnection.HTTP_OK) {
+                    mUser = resp.body();
+                    callBack.onSuccess(resp.body());
+                }
+                else {
+                    mUser = null;
+                    callBack.onFailed(ResultCode.INVALID_NAME_PASSWORD, new RuntimeException());
+                }
             }
-            else {
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
                 mUser = null;
-                callBack.onFailed(ResultCode.INVALID_NAME_PASSWORD, new RuntimeException());
+                callBack.onFailed(ResultCode.ERROR, t);
             }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            mUser = null;
-            callBack.onFailed(ResultCode.ERROR, e);
-        }
+        });
     }
 
     public void getProfile(final User user, final CallBack<UserProfile> callBack) {
-        try {
-            Thread.sleep(SLEEP_MILLIS);
-            final UserApi userApi = ApiClient.getInstance().newApi(UserApi.class);
-            final Call<UserProfile> call = userApi.getProfile(user.getAuth().getId(), user.getAuth().getToken());
-            final Response<UserProfile> resp = call.execute();
-            if (resp.code() == HttpURLConnection.HTTP_OK) {
-                mUserProfile = resp.body();
-                callBack.onSuccess(resp.body());
+//        Thread.sleep(SLEEP_MILLIS);
+        final UserApi userApi = ApiClient.getInstance().newApi(UserApi.class);
+        final Call<UserProfile> call = userApi.getProfile(user.getAuth().getId(), user.getAuth().getToken());
+        call.enqueue(new Callback<UserProfile>() {
+            @Override
+            public void onResponse(Call<UserProfile> call, Response<UserProfile> resp) {
+                if (resp.code() == HttpURLConnection.HTTP_OK) {
+                    mUserProfile = resp.body();
+                    callBack.onSuccess(resp.body());
+                }
+                else {
+                    mUserProfile = null;
+                    callBack.onFailed(ResultCode.TOKEN_ERROR, new RuntimeException());
+                }
             }
-            else {
+
+            @Override
+            public void onFailure(Call<UserProfile> call, Throwable t) {
                 mUserProfile = null;
-                callBack.onFailed(ResultCode.TOKEN_ERROR, new RuntimeException());
+                callBack.onFailed(ResultCode.ERROR, t);
             }
-        }
-        catch (Exception e) {
-            mUserProfile = null;
-            callBack.onFailed(ResultCode.ERROR, e);
-        }
+        });
     }
 
     public User getUser() {

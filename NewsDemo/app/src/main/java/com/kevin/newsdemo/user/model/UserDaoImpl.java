@@ -25,16 +25,18 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void insert(User user) {
         final SQLiteDatabase database = mySqLiteOpenHelper.getWritableDatabase();
-        String sql = "INSERT INTO " + TABLE_NAME + " (id, access_token, refresh_token), values(?,?, ?)";
+        String sql = "INSERT INTO " + TABLE_NAME + " (id_token, access_token, refresh_token), values(?,?, ?)";
         ContentValues values = new ContentValues();
         final Auth auth = user.getAuth();
-        values.put("id", auth.getId());
+        values.put("id_token", auth.getId());
         values.put("access_token", auth.getToken());
         values.put("refresh_token", auth.getRefreshToken());
         long id = database.insert(TABLE_NAME, sql, values);
         database.close();
         if (id <= 0) {
             throw new RuntimeException();
+        } else {
+            user.setId((int)id);
         }
     }
 
@@ -44,11 +46,12 @@ public class UserDaoImpl implements UserDao {
 
         final Auth auth = user.getAuth();
         ContentValues values = new ContentValues();
+        values.put("id_token", auth.getId());
         values.put("access_token", auth.getToken());
         values.put("refresh_token", auth.getRefreshToken());
         String whereClause = "id=?";
 
-        String[] whereArgs = new String[]{auth.getId()};
+        String[] whereArgs = new String[]{String.valueOf(user.getId())};
         final int update = database.update(TABLE_NAME, values, whereClause, whereArgs);
         database.close();
         if (update <= 0) {
@@ -57,23 +60,25 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User query() {
-        String sql = "SELECT * from " + TABLE_NAME + " ";
+    public User query(int id) {
+        String sql = "SELECT * from " + TABLE_NAME + " where id=?";
         final SQLiteDatabase database = mySqLiteOpenHelper.getReadableDatabase();
-        final Cursor cursor = database.rawQuery(sql, null);
+        final Cursor cursor = database.rawQuery(sql, new String[]{String.valueOf(id)});
         Auth auth = null;
         if (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex("id"));
+            id = cursor.getInt(cursor.getColumnIndex("id"));
+            String idToken = cursor.getString(cursor.getColumnIndex("id_token"));
             String token = cursor.getString(cursor.getColumnIndex("access_token"));
             String refreshToken = cursor.getString(cursor.getColumnIndex("refresh_token"));
 
-            auth = new Auth(String.valueOf(id), token, refreshToken);
-            User user = new User(auth);
+            auth = new Auth(idToken, token, refreshToken);
+            User user = new User(id, auth);
             cursor.close();
             database.close();
             return user;
         }
         else {
+            cursor.close();
             throw new RuntimeException();
         }
     }
@@ -84,7 +89,7 @@ public class UserDaoImpl implements UserDao {
 
         String where = "id=?";
 
-        String[] whereArgs = new String[]{user.getAuth().getId()};
+        String[] whereArgs = new String[]{String.valueOf(user.getId())};
         final int delete = database.delete(TABLE_NAME, where, whereArgs);
         database.close();
         if (delete <= 0) {

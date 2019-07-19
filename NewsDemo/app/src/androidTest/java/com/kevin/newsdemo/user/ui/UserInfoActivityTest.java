@@ -1,20 +1,26 @@
 package com.kevin.newsdemo.user.ui;
 
-import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.idling.CountingIdlingResource;
 import androidx.test.espresso.intent.Intents;
+import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.kevin.newsdemo.R;
+import com.kevin.newsdemo.data.Auth;
+import com.kevin.newsdemo.data.User;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.Serializable;
+
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.*;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
@@ -23,29 +29,23 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 public class UserInfoActivityTest {
+    private static final String TAG = "UserInfoActivity";
+    @Rule
+    public ActivityTestRule<UserInfoActivity> mUserInfoActivityRule;
+    private CountingIdlingResource mIdlingResource;
+
     @Before
     public void startMainActivityFromHomeScreen() {
-        Context context = InstrumentationRegistry.getTargetContext();
-        final Intent intent = context.getPackageManager()
-                .getLaunchIntentForPackage(context.getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);    // Clear out any previous instances
-        context.startActivity(intent);
+        Log.d(TAG, "startMainActivityFromHomeScreen: ");
+        mUserInfoActivityRule = new ActivityTestRule<>(UserInfoActivity.class);
+        User user = new User(new Auth("123456", "98908989089", "34545234234"));
+        Intent intent = new Intent(InstrumentationRegistry.getTargetContext(), UserInfoActivity.class);
+        intent.putExtra(UserInfoActivity.USER, (Serializable) user);
 
-        onView(withId(R.id.username)).perform(typeText("valid"));
-        //must perform(closeSoftKeyboard()) or will crash with "androidx.test.espresso.PerformException: Error performing 'single click - At Coordinates"
-        onView(withId(R.id.password)).perform(typeText("valid")).perform(closeSoftKeyboard());
-        onView(withId(R.id.login)).perform(click());
-
+        UserInfoActivity userInfoActivity = mUserInfoActivityRule.launchActivity(intent);
+        mIdlingResource = userInfoActivity.getIdlingResource();
+        IdlingRegistry.getInstance().register(mIdlingResource);
         Intents.init();
-        // TODO: 2019-07-18 more better way for wait network reqeust
-        try {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        intended(hasComponent(UserInfoActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
@@ -56,13 +56,16 @@ public class UserInfoActivityTest {
 
     @Test
     public void should_show_user_profile() {
-        try {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         onView(withId(R.id.nameTextView)).check(matches(withText("name: John Smith")));
         onView(withId(R.id.genderTextView)).check(matches(withText("gender: male")));
+    }
+
+
+    @After
+    public void tearDown() {
+        Intents.release();
+        if (mIdlingResource != null) {
+            IdlingRegistry.getInstance().unregister(mIdlingResource);
+        }
     }
 }

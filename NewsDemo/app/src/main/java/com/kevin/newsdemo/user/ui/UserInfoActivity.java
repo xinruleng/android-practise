@@ -1,8 +1,10 @@
 package com.kevin.newsdemo.user.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import androidx.test.espresso.idling.CountingIdlingResource;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kevin.newsdemo.R;
@@ -14,6 +16,7 @@ import com.kevin.newsdemo.data.UserProfile;
 import com.kevin.newsdemo.user.model.UserModel;
 
 public class UserInfoActivity extends BaseActivity {
+    private static final String TAG = "UserInfoActivity";
     public static final String USER = "user";
 
     private User mUser;
@@ -28,11 +31,13 @@ public class UserInfoActivity extends BaseActivity {
     TextView mGenderText;
     @BindView(R.id.loading)
     View mLoading;
+    private CountingIdlingResource mIdlingResource;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
 
@@ -44,7 +49,7 @@ public class UserInfoActivity extends BaseActivity {
         mTokenText.setText("token: " + mUser.getAuth().getToken());
 
         loading(true);
-
+        getIdlingResource().increment();
         final UserModel userModel = new UserModel();
         userModel.getProfile(mUser, new CallBack<UserProfile>() {
             @Override
@@ -52,9 +57,10 @@ public class UserInfoActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        loading(false);
+                        getIdlingResource().decrement();
                         mNameText.setText("name: " + userProfile.getProfile().getName());
                         mGenderText.setText("gender: " + userProfile.getProfile().getGender());
-                        loading(false);
                     }
                 });
             }
@@ -62,6 +68,7 @@ public class UserInfoActivity extends BaseActivity {
             @Override
             public void onFailed(ResultCode code, Throwable throwable) {
                 loading(false);
+                getIdlingResource().decrement();
             }
         });
 
@@ -74,5 +81,12 @@ public class UserInfoActivity extends BaseActivity {
                 mLoading.setVisibility(show ? View.VISIBLE : View.GONE);
             }
         });
+    }
+
+    public CountingIdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new CountingIdlingResource("CountingIdlingResource");
+        }
+        return mIdlingResource;
     }
 }

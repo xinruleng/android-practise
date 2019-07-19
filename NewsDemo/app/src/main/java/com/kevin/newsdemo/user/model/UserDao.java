@@ -11,7 +11,7 @@ public interface UserDao {
 
     void update(User user) throws Exception;
 
-    User query() throws Exception;
+    User query(int id) throws Exception;
 
     void delete(User user) throws Exception;
 }

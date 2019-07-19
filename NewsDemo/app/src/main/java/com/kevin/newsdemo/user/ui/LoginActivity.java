@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import androidx.test.espresso.idling.CountingIdlingResource;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,6 +29,8 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.loading)
     View mLoading;
 
+    private CountingIdlingResource mIdlingResource;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +52,12 @@ public class LoginActivity extends BaseActivity {
         String name = ViewUtils.getText(mUserName);
         String password = ViewUtils.getText(mPassword);
 
+        getIdlingResource().increment();
         userModel.login(name, password, new CallBack<User>() {
             @Override
             public void onSuccess(User o) {
                 loading(false);
+                getIdlingResource().decrement();
                 toast("登录成功 " + o);
                 startUserInfoActivity(o);
             }
@@ -60,9 +65,14 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onFailed(ResultCode code, Throwable throwable) {
                 loading(false);
+                getIdlingResource().decrement();
                 toast("登录失败 " + code.getDes() + "," + throwable);
             }
         });
+
+//        loading(false);
+//        User user = new User(new Auth("1", "token", "token2"));
+//        startUserInfoActivity(user);
     }
 
     private void startUserInfoActivity(User user) {
@@ -78,5 +88,12 @@ public class LoginActivity extends BaseActivity {
                 mLoading.setVisibility(show ? View.VISIBLE : View.GONE);
             }
         });
+    }
+
+    public CountingIdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new CountingIdlingResource("CountingIdlingResource");
+        }
+        return mIdlingResource;
     }
 }

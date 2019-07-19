@@ -8,6 +8,7 @@ import java.io.Serializable;
  * Created by kevin on 2019/07/17 10:45.
  */
 public class User implements Serializable {
+    private int id;
     @SerializedName("auth")
     private Auth auth;
 
@@ -18,8 +19,21 @@ public class User implements Serializable {
         this.auth = auth;
     }
 
+    public User(int id, Auth auth) {
+        this.id = id;
+        this.auth = auth;
+    }
+
     public Auth getAuth() {
         return auth;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
