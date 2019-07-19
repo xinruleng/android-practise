@@ -37,7 +37,7 @@ public class UserModelTest {
             @Override
             public void onSuccess(User user) {
                 Auth auth = user.getAuth();
-                assertEquals("123456", auth.getId());
+                assertEquals("123456", auth.getIdToken());
                 assertEquals("98908989089", auth.getToken());
                 assertEquals("34545234234", auth.getRefreshToken());
                 mutex.countDown();
@@ -110,7 +110,7 @@ public class UserModelTest {
             @Override
             public void onSuccess(User user) {
                 final Auth auth = user.getAuth();
-                auth.setId(auth.getId() + 1);
+                auth.setIdToken(auth.getIdToken() + 1);
                 auth.setToken(auth.getToken() + 1);
                 model.getProfile(user, new CallBack<UserProfile>() {
                     @Override

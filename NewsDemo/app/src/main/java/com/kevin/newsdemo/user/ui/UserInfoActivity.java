@@ -45,7 +45,7 @@ public class UserInfoActivity extends BaseActivity {
 
         toast(mUser.toString());
 
-        mIdText.setText("id: " + mUser.getAuth().getId());
+        mIdText.setText("id: " + mUser.getAuth().getIdToken());
         mTokenText.setText("token: " + mUser.getAuth().getToken());
 
         loading(true);

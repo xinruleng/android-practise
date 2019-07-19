@@ -51,7 +51,7 @@ public class UserModel {
     public void getProfile(final User user, final CallBack<UserProfile> callBack) {
 //        Thread.sleep(SLEEP_MILLIS);
         final UserApi userApi = ApiClient.getInstance().newApi(UserApi.class);
-        final Call<UserProfile> call = userApi.getProfile(user.getAuth().getId(), user.getAuth().getToken());
+        final Call<UserProfile> call = userApi.getProfile(user.getAuth().getIdToken(), user.getAuth().getToken());
         call.enqueue(new Callback<UserProfile>() {
             @Override
             public void onResponse(Call<UserProfile> call, Response<UserProfile> resp) {

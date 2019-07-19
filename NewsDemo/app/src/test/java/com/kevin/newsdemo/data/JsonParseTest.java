@@ -19,7 +19,7 @@ public class JsonParseTest {
 
         Gson gson = new Gson();
         Auth auth = gson.fromJson(json, Auth.class);
-        assertEquals("123456", auth.getId());
+        assertEquals("123456", auth.getIdToken());
         assertEquals("98908989089", auth.getToken());
         assertEquals("34545234234", auth.getRefreshToken());
     }
@@ -37,7 +37,7 @@ public class JsonParseTest {
         Gson gson = new Gson();
         User user = gson.fromJson(json, User.class);
         Auth auth = user.getAuth();
-        assertEquals("123456", auth.getId());
+        assertEquals("123456", auth.getIdToken());
         assertEquals("98908989089", auth.getToken());
         assertEquals("34545234234", auth.getRefreshToken());
     }

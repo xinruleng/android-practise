@@ -23,12 +23,12 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public void insert(User user) {
+    public long insert(User user) {
         final SQLiteDatabase database = mySqLiteOpenHelper.getWritableDatabase();
         String sql = "INSERT INTO " + TABLE_NAME + " (id_token, access_token, refresh_token), values(?,?, ?)";
         ContentValues values = new ContentValues();
         final Auth auth = user.getAuth();
-        values.put("id_token", auth.getId());
+        values.put("id_token", auth.getIdToken());
         values.put("access_token", auth.getToken());
         values.put("refresh_token", auth.getRefreshToken());
         long id = database.insert(TABLE_NAME, sql, values);
@@ -37,16 +37,17 @@ public class UserDaoImpl implements UserDao {
             throw new RuntimeException();
         } else {
             user.setId((int)id);
+            return id;
         }
     }
 
     @Override
-    public void update(User user) {
+    public int update(User user) {
         final SQLiteDatabase database = mySqLiteOpenHelper.getWritableDatabase();
 
         final Auth auth = user.getAuth();
         ContentValues values = new ContentValues();
-        values.put("id_token", auth.getId());
+        values.put("id_token", auth.getIdToken());
         values.put("access_token", auth.getToken());
         values.put("refresh_token", auth.getRefreshToken());
         String whereClause = "id=?";
@@ -54,9 +55,7 @@ public class UserDaoImpl implements UserDao {
         String[] whereArgs = new String[]{String.valueOf(user.getId())};
         final int update = database.update(TABLE_NAME, values, whereClause, whereArgs);
         database.close();
-        if (update <= 0) {
-            throw new RuntimeException();
-        }
+        return update;
     }
 
     @Override
@@ -79,12 +78,12 @@ public class UserDaoImpl implements UserDao {
         }
         else {
             cursor.close();
-            throw new RuntimeException();
+            return null;
         }
     }
 
     @Override
-    public void delete(User user) {
+    public int delete(User user) {
         final SQLiteDatabase database = mySqLiteOpenHelper.getWritableDatabase();
 
         String where = "id=?";
@@ -92,8 +91,6 @@ public class UserDaoImpl implements UserDao {
         String[] whereArgs = new String[]{String.valueOf(user.getId())};
         final int delete = database.delete(TABLE_NAME, where, whereArgs);
         database.close();
-        if (delete <= 0) {
-            throw new RuntimeException();
-        }
+        return delete;
     }
 }

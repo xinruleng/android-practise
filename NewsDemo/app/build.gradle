@@ -50,4 +50,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.6.0'
 
+    def room_version = "2.1.0" // 2.1.0 for latest stable version
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
+
 }

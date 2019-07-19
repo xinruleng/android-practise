@@ -1,31 +1,38 @@
 package com.kevin.newsdemo.data;
 
+import androidx.room.ColumnInfo;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by kevin on 2019/07/17 13:29.
  */
 public class Auth implements Serializable {
-    @SerializedName("id-token")
-    private String id;
+    @SerializedName("idToken-token")
+    @ColumnInfo(name = "idToken")
+    private String idToken;
+
     @SerializedName("access-token")
+    @ColumnInfo(name = "accessToken")
     private String token;
+
+    @ColumnInfo(name = "refreshToken")
     @SerializedName("refresh-token")
     private String refreshToken;
 
     public Auth() {
     }
 
-    public Auth(String id, String token, String refreshToken) {
-        this.id = id;
+    public Auth(String idToken, String token, String refreshToken) {
+        this.idToken = idToken;
         this.token = token;
         this.refreshToken = refreshToken;
     }
 
-    public String getId() {
-        return id;
+    public String getIdToken() {
+        return idToken;
     }
 
     public String getToken() {
@@ -36,8 +43,8 @@ public class Auth implements Serializable {
         return refreshToken;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdToken(String idToken) {
+        this.idToken = idToken;
     }
 
     public void setToken(String token) {
@@ -51,9 +58,26 @@ public class Auth implements Serializable {
     @Override
     public String toString() {
         return "Auth{" +
-                "id='" + id + '\'' +
+                "idToken='" + idToken + '\'' +
                 ", token='" + token + '\'' +
                 ", refreshToken='" + refreshToken + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Auth))
+            return false;
+        Auth auth = (Auth) o;
+        return Objects.equals(idToken, auth.idToken) &&
+                Objects.equals(token, auth.token) &&
+                Objects.equals(refreshToken, auth.refreshToken);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idToken, token, refreshToken);
     }
 }
