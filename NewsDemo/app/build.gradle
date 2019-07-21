@@ -5,16 +5,16 @@ jacoco {
     toolVersion = '0.8.1' //Use latest version
 }
 
-tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
-}
+//tasks.withType(Test) {
+//    jacoco.includeNoLocationClasses = true
+//}
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.kevin.newsdemo"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -33,7 +33,7 @@ android {
         unitTests.returnDefaultValues = true
 
 //        execution 'ANDROID_TEST_ORCHESTRATOR'
-        animationsDisabled true
+//        animationsDisabled true
 
         unitTests {
             includeAndroidResources = true
@@ -84,6 +84,10 @@ dependencies {
 
     testImplementation "org.mockito:mockito-all:1.10.19"
     implementation 'org.mockito:mockito-core:3.0.0'
+
+    testImplementation "org.robolectric:robolectric:4.3"
+// https://mvnrepository.com/artifact/androidx.test.ext/junit
+    testImplementation group: 'androidx.test.ext', name: 'junit', version: '1.1.1'
 
 }
 
