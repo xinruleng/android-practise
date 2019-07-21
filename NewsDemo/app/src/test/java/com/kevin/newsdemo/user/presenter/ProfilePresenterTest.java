@@ -35,6 +35,7 @@ public class ProfilePresenterTest {
     public void setupPresenter() {
         MockitoAnnotations.initMocks(this);
         mProfilePresenter = new ProfilePresenter(mUserModel, mProfileView, new ImmediateSchedulerProvider());
+        mProfilePresenter.start();
     }
 
     @Test

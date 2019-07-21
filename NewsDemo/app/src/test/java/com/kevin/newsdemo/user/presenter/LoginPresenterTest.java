@@ -36,6 +36,7 @@ public class LoginPresenterTest {
         MockitoAnnotations.initMocks(this);
         //        mLoginView = mock(UserContract.View.class);
         mLoginPresenter = new LoginPresenter(mUserModel, mLoginView, new ImmediateSchedulerProvider());
+        mLoginPresenter.start();
     }
 
     @Test

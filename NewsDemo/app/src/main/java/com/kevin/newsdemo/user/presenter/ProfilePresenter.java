@@ -43,6 +43,16 @@ public class ProfilePresenter implements UserContract.IProfilePresenter {
 
     }
 
+    @Override
+    public void subscribe() {
+
+    }
+
+    @Override
+    public void unsubscribe() {
+
+    }
+
     public ProfilePresenter(UserModel mUserModel, UserContract.IProfileView mProfileView, ImmediateSchedulerProvider immediateSchedulerProvider) {
         this.mUserModel = mUserModel;
         this.mProfileView = mProfileView;

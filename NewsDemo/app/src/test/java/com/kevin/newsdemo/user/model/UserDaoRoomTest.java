@@ -2,8 +2,10 @@ package com.kevin.newsdemo.user.model;
 
 import android.content.Context;
 import android.util.Log;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.room.Room;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import com.kevin.newsdemo.base.AppDatabase;
 import com.kevin.newsdemo.data.Auth;
 import com.kevin.newsdemo.data.User;
 import org.junit.After;
@@ -15,27 +17,28 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.fail;
 
 /**
- * Created by kevin on 2019/07/18 10:39.
+ * Created by kevin on 2019/07/21 12:13.
  */
-@RunWith(AndroidJUnit4.class)  //include this line or not has no difference
-public class UserDaoTest {
+@RunWith(AndroidJUnit4.class)
+public class UserDaoRoomTest {
     private static final String TAG = "UserDaoTest";
     public static final String ID = "123456";
     public static final String TOKEN = "98908989089";
     public static final String REFRESH_TOKEN = "34545234234";
     private UserDao dao;
     private User user;
-//    private AppDatabase db;
+    private AppDatabase db;
 
     @Before
     public void init() {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        dao = new UserDaoImpl(appContext);
+        Context appContext = ApplicationProvider.getApplicationContext();
         user = new User(new Auth(ID, TOKEN, REFRESH_TOKEN));
 
-//        db = Room.databaseBuilder(appContext,
-//          AppDatabase.class, "userZoom.db").build();
-//        dao = db.userDao();
+        db = Room.inMemoryDatabaseBuilder(appContext,
+          AppDatabase.class)
+          .allowMainThreadQueries()
+          .build();
+        dao = db.userDao();
         Log.d(TAG, "init: user=" + user);
     }
 
@@ -53,7 +56,7 @@ public class UserDaoTest {
         catch (Exception e) {
             Log.d(TAG, "tearDown: query user error");
         }
-//        db.close();
+        db.close();
     }
 
     @Test
@@ -118,6 +121,4 @@ public class UserDaoTest {
         Assert.assertFalse(update > 0);
 
     }
-
-
 }
