@@ -16,6 +16,8 @@ import com.kevin.newsdemo.base.schedulers.SchedulerProvider;
 import com.kevin.newsdemo.data.User;
 import com.kevin.newsdemo.user.UserContract;
 import com.kevin.newsdemo.user.model.UserModel;
+import com.kevin.newsdemo.user.model.api.ApiClient;
+import com.kevin.newsdemo.user.model.api.UserApi;
 import com.kevin.newsdemo.user.presenter.LoginPresenter;
 import com.kevin.newsdemo.utils.ViewUtils;
 
@@ -41,7 +43,9 @@ public class LoginActivity extends BaseActivity implements UserContract.View {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        mPresenter = new LoginPresenter(new UserModel(), this, SchedulerProvider.getInstance());
+        UserApi api = ApiClient.getInstance().newApi(UserApi.class);
+        final UserModel userModel = new UserModel(api);
+        mPresenter = new LoginPresenter(userModel, this, SchedulerProvider.getInstance());
     }
 
     @OnClick(R.id.login)
@@ -50,7 +54,6 @@ public class LoginActivity extends BaseActivity implements UserContract.View {
 
         loading(true);
 
-        UserModel userModel = new UserModel();
         String name = ViewUtils.getText(mUserName);
         String password = ViewUtils.getText(mPassword);
 

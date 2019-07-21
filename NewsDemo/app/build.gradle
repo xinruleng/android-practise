@@ -1,4 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = '0.8.1' //Use latest version
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
 
 android {
     compileSdkVersion 29
@@ -22,6 +31,13 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+
+//        execution 'ANDROID_TEST_ORCHESTRATOR'
+        animationsDisabled true
+
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 
     compileOptions {
@@ -63,4 +79,39 @@ dependencies {
     testImplementation "org.mockito:mockito-all:1.10.19"
     implementation 'org.mockito:mockito-core:3.0.0'
 
+}
+
+task jacocoUnitTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+
+//    $buildDir = // Location of the build directory for the build Variant
+
+    def coverageSourceDirs = [
+            "src/main/java"
+    ]
+
+    def fileFilter = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/*$ViewInjector*.*',
+            '**/*$ViewBinder*.*',
+            '**/BuildConfig.*',
+            '**/Manifest*.*'
+    ]
+
+    def javaClasses = fileTree(
+            dir: "$buildDir/intermediates/classes/debug",
+            excludes: fileFilter
+    )
+
+    classDirectories = files([ javaClasses ])
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec"
+    ])
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
 }

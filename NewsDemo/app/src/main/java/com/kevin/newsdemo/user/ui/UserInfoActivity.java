@@ -11,6 +11,8 @@ import com.kevin.newsdemo.R;
 import com.kevin.newsdemo.base.BaseActivity;
 import com.kevin.newsdemo.data.User;
 import com.kevin.newsdemo.user.model.UserModel;
+import com.kevin.newsdemo.user.model.api.ApiClient;
+import com.kevin.newsdemo.user.model.api.UserApi;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -49,7 +51,8 @@ public class UserInfoActivity extends BaseActivity {
 
         loading(true);
         getIdlingResource().increment();
-        final UserModel userModel = new UserModel();
+        UserApi api = ApiClient.getInstance().newApi(UserApi.class);
+        final UserModel userModel = new UserModel(api);
         userModel.getProfile(mUser)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())

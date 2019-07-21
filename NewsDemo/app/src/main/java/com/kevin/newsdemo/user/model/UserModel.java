@@ -6,7 +6,6 @@ import com.kevin.newsdemo.base.ResultCode;
 import com.kevin.newsdemo.data.LoginData;
 import com.kevin.newsdemo.data.User;
 import com.kevin.newsdemo.data.UserProfile;
-import com.kevin.newsdemo.user.model.api.ApiClient;
 import com.kevin.newsdemo.user.model.api.UserApi;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
@@ -23,10 +22,15 @@ public class UserModel {
     private User mUser;
     private UserProfile mUserProfile;
 
+    private UserApi mUserApi;
+
+    public UserModel(UserApi mUserApi) {
+        this.mUserApi = mUserApi;
+    }
+
     public Observable<BaseResult<User>> login(final String name, final String password) {
 //        Thread.sleep(SLEEP_MILLIS);
-        final UserApi userApi = ApiClient.getInstance().newApi(UserApi.class);
-        return userApi.login(new LoginData(name, password))
+        return mUserApi.login(new LoginData(name, password))
           .map(user -> BaseResult.succeed(user))
           .onErrorReturn(new Function<Throwable, BaseResult<User>>() {
               @Override
@@ -44,8 +48,7 @@ public class UserModel {
 
     public Observable<BaseResult<UserProfile>> getProfile(final User user) {
 //        Thread.sleep(SLEEP_MILLIS);
-        final UserApi userApi = ApiClient.getInstance().newApi(UserApi.class);
-        Observable<UserProfile> observable = userApi.getProfile(user.getAuth().getIdToken(), user.getAuth().getToken());
+        Observable<UserProfile> observable = mUserApi.getProfile(user.getAuth().getIdToken(), user.getAuth().getToken());
 
         return observable.map(profile -> {
             return BaseResult.succeed(profile);
