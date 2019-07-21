@@ -48,6 +48,18 @@ public class LoginActivity extends BaseActivity implements UserContract.View {
         mPresenter = new LoginPresenter(userModel, this, SchedulerProvider.getInstance());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.subscribe();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPresenter.unsubscribe();
+    }
+
     @OnClick(R.id.login)
     public void login() {
         Log.d(TAG, "login: ");
@@ -99,7 +111,7 @@ public class LoginActivity extends BaseActivity implements UserContract.View {
 
     @Override
     public void setPresenter(UserContract.Presenter presenter) {
-//        mPresenter = presenter;
+        mPresenter = presenter;
     }
 
     @Override
