@@ -33,7 +33,7 @@ android {
         unitTests.returnDefaultValues = true
 
 //        execution 'ANDROID_TEST_ORCHESTRATOR'
-//        animationsDisabled true
+        animationsDisabled true
 
         unitTests {
             includeAndroidResources = true

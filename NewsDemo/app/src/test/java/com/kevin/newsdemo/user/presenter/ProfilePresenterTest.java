@@ -88,4 +88,9 @@ public class ProfilePresenterTest {
         verify(mProfileView).setLoading(true);
         verify(mProfileView).setLoading(false);
     }
+
+    @Test
+    public void should_unsubscribe() {
+        mProfilePresenter.unsubscribe();
+    }
 }

@@ -122,4 +122,9 @@ public class LoginActivityJvmTest {
 
     }
 
+    @Test
+    public void should_unsubscribe() {
+        loginActivity.onPause();
+        verify(presenter).unsubscribe();
+    }
 }

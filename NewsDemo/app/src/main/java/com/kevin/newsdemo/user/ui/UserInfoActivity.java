@@ -9,14 +9,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kevin.newsdemo.R;
 import com.kevin.newsdemo.base.BaseActivity;
+import com.kevin.newsdemo.base.BaseResult;
+import com.kevin.newsdemo.base.schedulers.SchedulerProvider;
 import com.kevin.newsdemo.data.User;
+import com.kevin.newsdemo.data.UserProfile;
+import com.kevin.newsdemo.user.UserContract;
 import com.kevin.newsdemo.user.model.UserModel;
 import com.kevin.newsdemo.user.model.api.ApiClient;
 import com.kevin.newsdemo.user.model.api.UserApi;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import com.kevin.newsdemo.user.presenter.ProfilePresenter;
 
-public class UserInfoActivity extends BaseActivity {
+public class UserInfoActivity extends BaseActivity implements UserContract.IProfileView{
     private static final String TAG = "UserInfoActivity";
     public static final String USER = "user";
 
@@ -34,6 +37,7 @@ public class UserInfoActivity extends BaseActivity {
     View mLoading;
     private CountingIdlingResource mIdlingResource;
 
+    private UserContract.IProfilePresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +53,27 @@ public class UserInfoActivity extends BaseActivity {
         mIdText.setText("id: " + mUser.getAuth().getIdToken());
         mTokenText.setText("token: " + mUser.getAuth().getToken());
 
-        loading(true);
-        getIdlingResource().increment();
         UserApi api = ApiClient.getInstance().newApi(UserApi.class);
         final UserModel userModel = new UserModel(api);
-        userModel.getProfile(mUser)
-          .subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(
-            result -> {
-                loading(false);
-                getIdlingResource().decrement();
-                mNameText.setText("name: " + result.getData().getProfile().getName());
-                mGenderText.setText("gender: " + result.getData().getProfile().getGender());
-            },
-            t -> {
-                loading(false);
-                getIdlingResource().decrement();
-            }
-          )
-        ;
+        mPresenter = new ProfilePresenter(userModel, this, SchedulerProvider.getInstance());
+
+        loading(true);
+        getIdlingResource().increment();
+
+        mPresenter.getProfile(mUser);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.subscribe();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPresenter.unsubscribe();
     }
 
     private void loading(final boolean show) {
@@ -85,5 +90,27 @@ public class UserInfoActivity extends BaseActivity {
             mIdlingResource = new CountingIdlingResource("CountingIdlingResource");
         }
         return mIdlingResource;
+    }
+
+    @Override
+    public void showProfileSucceed(BaseResult<UserProfile> result) {
+        getIdlingResource().decrement();
+        mNameText.setText("name: " + result.getData().getProfile().getName());
+        mGenderText.setText("gender: " + result.getData().getProfile().getGender());
+    }
+
+    @Override
+    public void showProfileFailed(BaseResult<UserProfile> result) {
+        getIdlingResource().decrement();
+    }
+
+    @Override
+    public void setPresenter(UserContract.IProfilePresenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void setLoading(boolean active) {
+        loading(active);
     }
 }

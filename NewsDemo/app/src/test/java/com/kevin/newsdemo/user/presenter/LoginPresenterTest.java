@@ -91,4 +91,8 @@ public class LoginPresenterTest {
         verify(mLoginView).setLoading(false);
     }
 
+    @Test
+    public void should_unsubscribe() {
+        mLoginPresenter.unsubscribe();
+    }
 }
