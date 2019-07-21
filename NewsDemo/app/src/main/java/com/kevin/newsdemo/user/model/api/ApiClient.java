@@ -7,6 +7,7 @@ import com.kevin.newsdemo.user.model.UserModel;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -26,9 +27,12 @@ public class ApiClient {
     }
 
     private ApiClient() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.level(HttpLoggingInterceptor.Level.BASIC);
         OkHttpClient client = new OkHttpClient.Builder()
           .connectTimeout(5, TimeUnit.SECONDS)
           .readTimeout(5, TimeUnit.SECONDS)
+          .addInterceptor(logging)
           .addNetworkInterceptor(new Interceptor() {
               @Override
               public Response intercept(Chain chain) throws IOException {

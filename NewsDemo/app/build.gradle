@@ -65,6 +65,9 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.6.0'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
+    implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.0.1'
+
 
     def room_version = "2.1.0" // 2.1.0 for latest stable version
 
