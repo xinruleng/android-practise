@@ -79,6 +79,7 @@ public class UserDaoImpl implements UserDao {
         }
         else {
             cursor.close();
+            database.close();
             return null;
         }
     }
