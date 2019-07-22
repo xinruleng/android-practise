@@ -91,7 +91,7 @@ dependencies {
 
 }
 
-task jacocoUnitTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+task jacocoUnitTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
 
 //    $buildDir = // Location of the build directory for the build Variant
 

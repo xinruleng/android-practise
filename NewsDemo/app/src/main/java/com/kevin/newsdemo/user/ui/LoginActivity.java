@@ -12,7 +12,6 @@ import butterknife.OnClick;
 import com.kevin.newsdemo.R;
 import com.kevin.newsdemo.base.BaseActivity;
 import com.kevin.newsdemo.base.BaseResult;
-import com.kevin.newsdemo.base.schedulers.SchedulerProvider;
 import com.kevin.newsdemo.data.User;
 import com.kevin.newsdemo.user.UserContract;
 import com.kevin.newsdemo.user.model.UserModel;
@@ -45,7 +44,7 @@ public class LoginActivity extends BaseActivity implements UserContract.View {
 
         UserApi api = ApiClient.getInstance().newApi(UserApi.class);
         final UserModel userModel = new UserModel(api);
-        mPresenter = new LoginPresenter(userModel, this, SchedulerProvider.getInstance());
+        mPresenter = new LoginPresenter(userModel, this);
     }
 
     @Override

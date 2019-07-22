@@ -2,11 +2,12 @@ package com.kevin.newsdemo.user.presenter;
 
 import androidx.annotation.NonNull;
 import com.kevin.newsdemo.base.BaseResult;
-import com.kevin.newsdemo.base.schedulers.BaseSchedulerProvider;
 import com.kevin.newsdemo.data.User;
 import com.kevin.newsdemo.user.UserContract;
 import com.kevin.newsdemo.user.model.UserModel;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by kevin on 2019/07/19 13:54.
@@ -14,15 +15,14 @@ import io.reactivex.disposables.CompositeDisposable;
 public class ProfilePresenter implements UserContract.IProfilePresenter {
     UserModel mUserModel;
     UserContract.IProfileView mProfileView;
-    BaseSchedulerProvider mSchedulerProvider;
     @NonNull
     private CompositeDisposable mCompositeDisposable;
     @Override
     public void getProfile(User user) {
         mProfileView.setLoading(true);
         mCompositeDisposable.add(mUserModel.getProfile(user)
-          .subscribeOn(mSchedulerProvider.io())
-          .observeOn(mSchedulerProvider.ui())
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
           .subscribe(
             userProfileResult -> {
                 mProfileView.setLoading(false);
@@ -56,11 +56,10 @@ public class ProfilePresenter implements UserContract.IProfilePresenter {
         mCompositeDisposable.clear();
     }
 
-    public ProfilePresenter(UserModel mUserModel, UserContract.IProfileView mProfileView, BaseSchedulerProvider immediateSchedulerProvider) {
+    public ProfilePresenter(UserModel mUserModel, UserContract.IProfileView mProfileView) {
         this.mUserModel = mUserModel;
         this.mProfileView = mProfileView;
         mProfileView.setPresenter(this);
-        this.mSchedulerProvider = immediateSchedulerProvider;
         mCompositeDisposable = new CompositeDisposable();
     }
 }

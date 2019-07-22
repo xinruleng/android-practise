@@ -10,7 +10,6 @@ import butterknife.ButterKnife;
 import com.kevin.newsdemo.R;
 import com.kevin.newsdemo.base.BaseActivity;
 import com.kevin.newsdemo.base.BaseResult;
-import com.kevin.newsdemo.base.schedulers.SchedulerProvider;
 import com.kevin.newsdemo.data.User;
 import com.kevin.newsdemo.data.UserProfile;
 import com.kevin.newsdemo.user.UserContract;
@@ -55,7 +54,7 @@ public class UserInfoActivity extends BaseActivity implements UserContract.IProf
 
         UserApi api = ApiClient.getInstance().newApi(UserApi.class);
         final UserModel userModel = new UserModel(api);
-        mPresenter = new ProfilePresenter(userModel, this, SchedulerProvider.getInstance());
+        mPresenter = new ProfilePresenter(userModel, this);
 
         loading(true);
         getIdlingResource().increment();

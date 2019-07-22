@@ -2,7 +2,6 @@ package com.kevin.newsdemo.user.presenter;
 
 import com.kevin.newsdemo.base.BaseResult;
 import com.kevin.newsdemo.base.ResultCode;
-import com.kevin.newsdemo.base.schedulers.ImmediateSchedulerProvider;
 import com.kevin.newsdemo.data.Auth;
 import com.kevin.newsdemo.data.Profile;
 import com.kevin.newsdemo.data.User;
@@ -11,6 +10,7 @@ import com.kevin.newsdemo.user.UserContract;
 import com.kevin.newsdemo.user.model.UserModel;
 import io.reactivex.Observable;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -25,6 +25,9 @@ public class ProfilePresenterTest {
     public static final String ID = "123456";
     public static final String TOKEN = "98908989089";
     public static final String REFRESH_TOKEN = "34545234234";
+    @Rule
+    public RxJavaRule rxJavaRule = new RxJavaRule();
+    
     @Mock
     private UserModel mUserModel;
     @Mock
@@ -34,7 +37,7 @@ public class ProfilePresenterTest {
     @Before
     public void setupPresenter() {
         MockitoAnnotations.initMocks(this);
-        mProfilePresenter = new ProfilePresenter(mUserModel, mProfileView, new ImmediateSchedulerProvider());
+        mProfilePresenter = new ProfilePresenter(mUserModel, mProfileView);
         mProfilePresenter.start();
     }
 
