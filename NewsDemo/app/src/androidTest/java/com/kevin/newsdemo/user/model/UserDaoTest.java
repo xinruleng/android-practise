@@ -2,7 +2,7 @@ package com.kevin.newsdemo.user.model;
 
 import android.content.Context;
 import android.util.Log;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 import com.kevin.newsdemo.data.Auth;
 import com.kevin.newsdemo.data.User;
@@ -29,7 +29,7 @@ public class UserDaoTest {
 
     @Before
     public void init() {
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = ApplicationProvider.getApplicationContext();
         dao = new UserDaoImpl(appContext);
         user = new User(new Auth(ID, TOKEN, REFRESH_TOKEN));
 

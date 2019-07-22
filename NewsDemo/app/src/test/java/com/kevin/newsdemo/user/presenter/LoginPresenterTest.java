@@ -95,6 +95,11 @@ public class LoginPresenterTest {
     }
 
     @Test
+    public void should_subscribe() {
+        mLoginPresenter.subscribe();
+    }
+
+    @Test
     public void should_unsubscribe() {
         mLoginPresenter.unsubscribe();
     }

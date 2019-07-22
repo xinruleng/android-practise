@@ -93,6 +93,11 @@ public class ProfilePresenterTest {
     }
 
     @Test
+    public void should_subscribe() {
+        mProfilePresenter.subscribe();
+    }
+
+    @Test
     public void should_unsubscribe() {
         mProfilePresenter.unsubscribe();
     }

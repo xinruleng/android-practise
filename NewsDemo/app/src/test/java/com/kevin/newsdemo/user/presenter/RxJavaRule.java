@@ -32,6 +32,8 @@ public class RxJavaRule implements TestRule {
                         return Schedulers.trampoline();
                     }
                 });
+
+                base.evaluate();
             }
         };
     }
