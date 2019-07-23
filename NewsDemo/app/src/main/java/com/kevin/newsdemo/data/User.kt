@@ -17,7 +17,7 @@ class User : Serializable {
     var id: Int = 0
     @SerializedName("auth")
     @Embedded
-    var auth: Auth? = null
+    lateinit var auth: Auth
 
     constructor() {}
 

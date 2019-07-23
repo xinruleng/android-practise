@@ -85,8 +85,8 @@ dependencies {
 
     implementation group: 'com.jakewharton.retrofit', name: 'retrofit2-rxjava2-adapter', version: '1.0.0'
 
-    testImplementation "org.mockito:mockito-all:1.10.19"
-    implementation 'org.mockito:mockito-core:3.0.0'
+//    testImplementation "org.mockito:mockito-all:1.10.19"
+//    implementation 'org.mockito:mockito-core:3.0.0'
 
     testImplementation "org.robolectric:robolectric:4.3"
 // https://mvnrepository.com/artifact/androidx.test.ext/junit
@@ -94,6 +94,11 @@ dependencies {
 
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    // https://mvnrepository.com/artifact/org.mockito/mockito-inline
+//    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.0.0'
+
+    testImplementation "org.powermock:powermock-module-junit4:2.0.2"
+    testImplementation "org.powermock:powermock-api-mockito2:2.0.2"
 
 }
 

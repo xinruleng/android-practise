@@ -11,15 +11,15 @@ import java.util.*
 class Auth : Serializable {
     @SerializedName("id-token")
     @ColumnInfo(name = "idToken")
-    var idToken: String? = null
+    lateinit var idToken: String
 
     @SerializedName("access-token")
     @ColumnInfo(name = "accessToken")
-    var token: String? = null
+    lateinit var token: String
 
     @ColumnInfo(name = "refreshToken")
     @SerializedName("refresh-token")
-    var refreshToken: String? = null
+    lateinit var refreshToken: String
 
     constructor() {}
 

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.kevin.newsdemo.base;
+package com.kevin.newsdemo.base
 
-public interface BaseView<T extends BasePresenter> {
+interface BaseView<T : BasePresenter> {
 
-    void setPresenter(T presenter);
+    fun setPresenter(presenter: T)
 
-    void setLoading(boolean active);
+    fun setLoading(active: Boolean)
 
 }

@@ -50,7 +50,7 @@ public class ApiClient {
           })
           .build();
         final Retrofit.Builder builder = new Retrofit.Builder()
-          .baseUrl(UserModel.HOST)
+          .baseUrl(UserModel.Companion.getHOST())
           .client(client)
           .addConverterFactory(GsonConverterFactory.create())
           .addCallAdapterFactory(RxJava2CallAdapterFactory.create());

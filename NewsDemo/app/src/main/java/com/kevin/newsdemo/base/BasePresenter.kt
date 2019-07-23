@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.kevin.newsdemo.base;
+package com.kevin.newsdemo.base
 
-public interface BasePresenter {
+interface BasePresenter {
 
-    void start();
+    fun start()
 
-    void subscribe();
+    fun subscribe()
 
-    void unsubscribe();
+    fun unsubscribe()
 }
