@@ -40,10 +40,10 @@ public class UserInfoActivityTest {
         mUserInfoActivityRule = new ActivityTestRule<>(UserInfoActivity.class);
         User user = new User(new Auth("123456", "98908989089", "34545234234"));
         Intent intent = new Intent(InstrumentationRegistry.getTargetContext(), UserInfoActivity.class);
-        intent.putExtra(UserInfoActivity.USER, (Serializable) user);
+        intent.putExtra(UserInfoActivity.Companion.getUSER(), (Serializable) user);
 
         UserInfoActivity userInfoActivity = mUserInfoActivityRule.launchActivity(intent);
-        mIdlingResource = userInfoActivity.getIdlingResource();
+        mIdlingResource = userInfoActivity.getMIdlingResource();
         IdlingRegistry.getInstance().register(mIdlingResource);
         Intents.init();
     }

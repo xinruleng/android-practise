@@ -20,3 +20,6 @@ delete class:
 com.kevin.newsdemo.base.schedulers.BaseSchedulerProvider
 com.kevin.newsdemo.base.schedulers.ImmediateSchedulerProvider
 com.kevin.newsdemo.base.schedulers.SchedulerProvider
+
+MVP:
+Java 3024 行
