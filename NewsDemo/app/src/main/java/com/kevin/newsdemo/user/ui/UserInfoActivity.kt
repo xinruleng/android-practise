@@ -32,13 +32,14 @@ class UserInfoActivity : BaseActivity(), UserContract.IProfileView {
         setContentView(R.layout.activity_user_info)
         ButterKnife.bind(this)
 
-        mUser = intent.getSerializableExtra(USER) as User
+        var u: User? = intent.getSerializableExtra(USER) as User
+        mUser = u!!
         toast(mUser.toString())
 
         idText.text = "id: " + mUser!!.auth!!.idToken!!
         tokenText.text = "token: " + mUser!!.auth!!.token!!
 
-        val api = ApiClient.getInstance().newApi(UserApi::class.java)
+        val api = ApiClient.instance.newApi(UserApi::class.java)
         val userModel = UserModel(api)
         mPresenter = ProfilePresenter(userModel, this)
 
@@ -65,8 +66,8 @@ class UserInfoActivity : BaseActivity(), UserContract.IProfileView {
 
     override fun showProfileSucceed(result: BaseResult<UserProfile>) {
         mIdlingResource.decrement()
-        nameTextView.text = "name: " + result.data.profile!!.name
-        genderTextView.text = "gender: " + result.data.profile!!.gender
+        nameTextView.text = "name: " + result.data?.profile!!.name
+        genderTextView.text = "gender: " + result.data!!.profile!!.gender
     }
 
     override fun showProfileFailed(result: BaseResult<UserProfile>) {

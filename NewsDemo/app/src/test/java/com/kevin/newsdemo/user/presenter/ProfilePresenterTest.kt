@@ -14,7 +14,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.powermock.api.mockito.PowerMockito
@@ -30,15 +29,12 @@ class ProfilePresenterTest {
     @Rule
     var rxJavaRule = RxJavaRule()
 
-    @Mock
     private lateinit var mUserModel: UserModel
-    @Mock
     private lateinit var mProfileView: UserContract.IProfileView
     private lateinit var mProfilePresenter: UserContract.IProfilePresenter
 
     @Before
     fun setupPresenter() {
-//        MockitoAnnotations.initMocks(this)
         mUserModel = PowerMockito.mock(UserModel::class.java)
         mProfileView = PowerMockito.mock(UserContract.IProfileView::class.java)
         mProfilePresenter = ProfilePresenter(mUserModel, mProfileView)

@@ -22,4 +22,8 @@ com.kevin.newsdemo.base.schedulers.ImmediateSchedulerProvider
 com.kevin.newsdemo.base.schedulers.SchedulerProvider
 
 MVP:
-Java 3024 行
+All Java code:
+Java 3024  code lines
+
+convert Java to Kotlin:
+Kotlin 2766 code lines

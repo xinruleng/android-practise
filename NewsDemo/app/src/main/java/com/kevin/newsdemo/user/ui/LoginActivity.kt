@@ -21,23 +21,16 @@ import java.io.Serializable
 
 class LoginActivity : BaseActivity(), UserContract.View {
 
-    private var mIdlingResource: CountingIdlingResource? = null
+    var mIdlingResource: CountingIdlingResource = CountingIdlingResource("CountingIdlingResource")
 
     private var mPresenter: UserContract.Presenter? = null
 
-    val idlingResource: CountingIdlingResource
-        get() {
-            if (mIdlingResource == null) {
-                mIdlingResource = CountingIdlingResource("CountingIdlingResource")
-            }
-            return mIdlingResource as CountingIdlingResource
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val api = ApiClient.getInstance().newApi(UserApi::class.java)
+        val api = ApiClient.instance.newApi(UserApi::class.java)
         val userModel = UserModel(api)
         mPresenter = LoginPresenter(userModel, this)
         login.setOnClickListener { v -> login() }
@@ -61,7 +54,7 @@ class LoginActivity : BaseActivity(), UserContract.View {
         val name = ViewUtils.getText(username)
         val password = ViewUtils.getText(password)
 
-        idlingResource.increment()
+        mIdlingResource.increment()
 
         mPresenter!!.login(name, password)
     }
@@ -77,13 +70,13 @@ class LoginActivity : BaseActivity(), UserContract.View {
     }
 
     override fun showLoginSucceed(o: BaseResult<User>) {
-        idlingResource.decrement()
+        mIdlingResource.decrement()
         toast("Login succeed $o")
-        startUserInfoActivity(o.data)
+        startUserInfoActivity(o.data!!)
     }
 
     override fun showLoginFailed(result: BaseResult<User>) {
-        idlingResource.decrement()
+        mIdlingResource.decrement()
         toast("Login failed " + result.throwable)
     }
 

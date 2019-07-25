@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.View
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kevin.newsdemo.base.BaseResult
 import com.kevin.newsdemo.base.ResultCode
 import com.kevin.newsdemo.data.Auth
@@ -18,24 +17,35 @@ import kotlinx.android.synthetic.main.activity_user_info.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
+import org.powermock.api.mockito.PowerMockito
+import org.powermock.core.classloader.annotations.PowerMockIgnore
+import org.powermock.core.classloader.annotations.PrepareForTest
+import org.powermock.modules.junit4.PowerMockRunner
+import org.powermock.modules.junit4.PowerMockRunnerDelegate
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.io.Serializable
 
 /**
  * Created by kevin on 2019/07/21 15:31.
  */
-@RunWith(AndroidJUnit4::class)
+@RunWith(PowerMockRunner::class)
+@PowerMockRunnerDelegate(RobolectricTestRunner::class)
+@PrepareForTest(ProfilePresenter::class)
+@Config(
+        sdk = [21])
+@PowerMockIgnore( "org.mockito.*", "org.robolectric.*", "android.*", "androidx.*" )
 class UserInfoActivityJvmTest {
     private lateinit var userInfoActivity: UserInfoActivity
 
-    @Mock
+//    @Mock
     private lateinit var presenter: ProfilePresenter
 
     @Before
     fun init() {
-        MockitoAnnotations.initMocks(this)
+//        MockitoAnnotations.initMocks(this)
+        presenter = PowerMockito.mock(ProfilePresenter::class.java)
         val intent = Intent(ApplicationProvider.getApplicationContext<Context>(), UserInfoActivity::class.java)
         val user = User(Auth(ID, TOKEN, REFRESH_TOKEN))
         intent.putExtra(UserInfoActivity.USER, user as Serializable)

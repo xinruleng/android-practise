@@ -13,7 +13,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
@@ -35,8 +34,6 @@ class LoginPresenterTest {
 
     @Before
     fun setupPresenter() {
-        MockitoAnnotations.initMocks(this)
-        //        mLoginView = mock(UserContract.View.class);
         mUserModel = PowerMockito.mock(UserModel::class.java)
         mLoginView = PowerMockito.mock(UserContract.View::class.java)
         mLoginPresenter = LoginPresenter(mUserModel, mLoginView)

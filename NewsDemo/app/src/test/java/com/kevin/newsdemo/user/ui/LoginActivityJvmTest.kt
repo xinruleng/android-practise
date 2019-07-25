@@ -3,7 +3,6 @@ package com.kevin.newsdemo.user.ui
 import android.content.Intent
 import android.view.View
 import androidx.test.core.app.ActivityScenario
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kevin.newsdemo.R
 import com.kevin.newsdemo.base.BaseResult
 import com.kevin.newsdemo.base.ResultCode
@@ -19,7 +18,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
+import org.powermock.api.mockito.PowerMockito
+import org.powermock.core.classloader.annotations.PrepareForTest
+import org.powermock.modules.junit4.PowerMockRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.shadows.ShadowToast
@@ -27,7 +28,8 @@ import org.robolectric.shadows.ShadowToast
 /**
  * Created by kevin on 2019/07/21 14:20.
  */
-@RunWith(AndroidJUnit4::class)
+@RunWith(PowerMockRunner::class)
+@PrepareForTest(LoginPresenter::class)
 class LoginActivityJvmTest {
     private lateinit var loginActivity: LoginActivity
     @Mock
@@ -35,7 +37,7 @@ class LoginActivityJvmTest {
 
     @Before
     fun init() {
-        MockitoAnnotations.initMocks(this)
+        presenter = PowerMockito.mock(LoginPresenter::class.java)
         val scenario = ActivityScenario.launch(LoginActivity::class.java)
         scenario.onActivity { act ->
             loginActivity = act
